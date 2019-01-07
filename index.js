@@ -20,10 +20,13 @@ server.get("/api/posts", (req, res) => {
 });
 
 server.get("/api/posts/:id", (req, res) => {
-  const id = req.params.id;
+  //req comes from the front-end, res comes from the database
+  //back-end is more like a bridge between the FE and DB
+  const { id } = req.params;
+  //look into the DB and find the object with matching id
   db.findById(id)
     .then(post => {
-      if (post.length !== 0) {
+      if (post.length) {
         res.send({ post });
       } else {
         res
