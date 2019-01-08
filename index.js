@@ -3,8 +3,15 @@
 const express = require("express");
 const db = require("./data/db.js");
 const server = express();
+const cors = require("cors");
 // add your server code starting here
 server.use(express.json());
+server.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000"
+  })
+);
 server.listen(5000, () => console.log("server is running"));
 
 server.get("/api/posts", (req, res) => {
@@ -43,7 +50,6 @@ server.get("/api/posts/:id", (req, res) => {
 
 server.post("/api/posts", (req, res) => {
   const postInfo = req.body;
-  console.log(postInfo);
   if (!postInfo.title || !postInfo.contents) {
     res.status(400).json({
       errorMessage: "Please provide title and contents for the post."
