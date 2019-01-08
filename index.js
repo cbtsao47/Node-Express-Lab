@@ -43,7 +43,8 @@ server.get("/api/posts/:id", (req, res) => {
 
 server.post("/api/posts", (req, res) => {
   const postInfo = req.body;
-  if (!postInfo.title && !postInfo.contents) {
+  console.log(postInfo);
+  if (!postInfo.title || !postInfo.contents) {
     res.status(400).json({
       errorMessage: "Please provide title and contents for the post."
     });
@@ -87,4 +88,39 @@ server.delete("/api/posts/:id", (req, res) => {
       }
     })
     .catch(err => res.status(500).json({ error: "findById failed" }));
+});
+server.put("/api/posts/:id", (req, res) => {
+  const { id } = req.params;
+  const { title, contents } = req.body;
+  db.findById(id)
+    .then(post => {
+      if (!post.length) {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      } else if (title === undefined || contents === undefined) {
+        res.status(400).json({
+          errorMessage: "Please provide title and contents for the post."
+        });
+      } else {
+        db.update(id, { title, contents })
+          .then(count => {
+            db.findById(id)
+              .then(post => {
+                res.status(200).json(post);
+              })
+              .catch(err =>
+                res.status(500).json({ error: "Cannot find post by the ID" })
+              );
+          })
+          .catch(err =>
+            res
+              .status(500)
+              .json({ error: "The post information could not be modified." })
+          );
+      }
+    })
+    .catch(err =>
+      res.status(500).json({ error: "Cannot find post by the ID" })
+    );
 });
