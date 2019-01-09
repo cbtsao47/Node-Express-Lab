@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-
 const StyledContainer = styled.div`
   border: 0.5rem solid #eb2f64;
   background: #f4f2f2;
@@ -17,7 +16,10 @@ const StyledContainer = styled.div`
     font-size: 1.4rem;
   }
   &:hover {
-    transform: scale(1.1);
+    .title {
+      color: #eb2f64;
+      text-decoration: underline;
+    }
   }
   &::before {
     content: "\\201C";
@@ -30,6 +32,7 @@ const StyledContainer = styled.div`
     font-family: sans-serif;
     overflow: hidden;
     z-index: 1;
+    height: 10rem;
   }
 `;
 
