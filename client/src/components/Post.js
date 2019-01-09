@@ -20,6 +20,7 @@ const StyledContainer = styled.div`
       color: #eb2f64;
       text-decoration: underline;
     }
+    cursor: pointer;
   }
   &::before {
     content: "\\201C";
